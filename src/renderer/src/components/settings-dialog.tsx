@@ -1,9 +1,11 @@
-import { useState } from 'react'
-import { Monitor, Moon, Palette, Sun, X, type LucideIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Monitor, Moon, Palette, RefreshCw, Sun, Terminal, X, type LucideIcon } from 'lucide-react'
 import { Dialog } from 'radix-ui'
 
 import type { Theme } from '@/hooks/use-theme'
 import { cn } from '@/lib/utils'
+import { getHarnessModelValue, type HarnessId, type HarnessInfo } from '../../../shared/harness'
+import HarnessCard from './harness-card'
 
 type SettingsDialogProps = {
   open: boolean
@@ -12,13 +14,16 @@ type SettingsDialogProps = {
   onThemeChange: (theme: Theme) => void
 }
 
-type SettingsCategory = 'appearance'
+type SettingsCategory = 'appearance' | 'harness'
 
 const categories: Array<{
   id: SettingsCategory
   label: string
   icon: LucideIcon
-}> = [{ id: 'appearance', label: '外观', icon: Palette }]
+}> = [
+  { id: 'appearance', label: '外观', icon: Palette },
+  { id: 'harness', label: 'Harness', icon: Terminal }
+]
 
 const themeOptions: Array<{
   value: Theme
@@ -30,6 +35,30 @@ const themeOptions: Array<{
   { value: 'system', label: '跟随系统', icon: Monitor }
 ]
 
+function reconcileHarnessModels(
+  harnesses: HarnessInfo[],
+  currentModels: Partial<Record<HarnessId, string[]>>
+): Partial<Record<HarnessId, string[]>> {
+  const nextModels = { ...currentModels }
+
+  for (const harness of harnesses) {
+    const availableModelValues = new Set(harness.models.map(getHarnessModelValue))
+    const retainedModels = (currentModels[harness.id] ?? []).filter((model) =>
+      availableModelValues.has(model)
+    )
+    const initialModel = harness.models.find((model) => model.isDefault) ?? harness.models[0]
+
+    nextModels[harness.id] =
+      retainedModels.length > 0
+        ? retainedModels
+        : initialModel
+          ? [getHarnessModelValue(initialModel)]
+          : []
+  }
+
+  return nextModels
+}
+
 function SettingsDialog({
   open,
   theme,
@@ -37,9 +66,83 @@ function SettingsDialog({
   onThemeChange
 }: SettingsDialogProps): React.JSX.Element {
   const [activeCategory, setActiveCategory] = useState<SettingsCategory>('appearance')
+  const [harnesses, setHarnesses] = useState<HarnessInfo[]>([])
+  const [isDetecting, setIsDetecting] = useState(false)
+  const [detectionError, setDetectionError] = useState(false)
+  const [enabledHarnesses, setEnabledHarnesses] = useState<Partial<Record<HarnessId, boolean>>>({})
+  const [expandedHarness, setExpandedHarness] = useState<HarnessId | null>(null)
+  const [selectedHarnessModels, setSelectedHarnessModels] = useState<
+    Partial<Record<HarnessId, string[]>>
+  >({})
+
+  useEffect(() => {
+    return window.api.harness.onUpdated((detectedHarnesses) => {
+      setHarnesses(detectedHarnesses)
+      setSelectedHarnessModels((currentModels) =>
+        reconcileHarnessModels(detectedHarnesses, currentModels)
+      )
+    })
+  }, [])
+
+  const runHarnessDetection = (refresh = false): void => {
+    setIsDetecting(true)
+    setDetectionError(false)
+
+    window.api.harness
+      .detect(refresh)
+      .then((detectedHarnesses) => {
+        setHarnesses(detectedHarnesses)
+        setSelectedHarnessModels((currentModels) =>
+          reconcileHarnessModels(detectedHarnesses, currentModels)
+        )
+      })
+      .catch(() => {
+        setDetectionError(true)
+      })
+      .finally(() => {
+        setIsDetecting(false)
+      })
+  }
+
+  const handleCategoryChange = (category: SettingsCategory): void => {
+    setActiveCategory(category)
+
+    if (category === 'harness') {
+      runHarnessDetection()
+    }
+  }
+
+  const handleOpenChange = (nextOpen: boolean): void => {
+    if (!nextOpen) {
+      setActiveCategory('appearance')
+      setEnabledHarnesses({})
+      setExpandedHarness(null)
+      setSelectedHarnessModels({})
+    }
+
+    onOpenChange(nextOpen)
+  }
+
+  const handleHarnessEnabledChange = (harnessId: HarnessId, enabled: boolean): void => {
+    setEnabledHarnesses((currentHarnesses) => ({
+      ...currentHarnesses,
+      [harnessId]: enabled
+    }))
+  }
+
+  const handleHarnessExpandedChange = (harnessId: HarnessId, expanded: boolean): void => {
+    setExpandedHarness(expanded ? harnessId : null)
+  }
+
+  const handleHarnessModelsChange = (harnessId: HarnessId, models: string[]): void => {
+    setSelectedHarnessModels((currentHarnesses) => ({
+      ...currentHarnesses,
+      [harnessId]: models
+    }))
+  }
 
   return (
-    <Dialog.Root open={open} onOpenChange={onOpenChange}>
+    <Dialog.Root open={open} onOpenChange={handleOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/60" />
         <Dialog.Content
@@ -77,7 +180,7 @@ function SettingsDialog({
                           ? 'bg-accent font-medium text-accent-foreground'
                           : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground'
                       )}
-                      onClick={() => setActiveCategory(category.id)}
+                      onClick={() => handleCategoryChange(category.id)}
                     >
                       <Icon className="size-4 shrink-0" strokeWidth={1.75} />
                       <span>{category.label}</span>
@@ -119,6 +222,46 @@ function SettingsDialog({
                       })}
                     </div>
                   </div>
+                </div>
+              )}
+
+              {activeCategory === 'harness' && (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between gap-4">
+                    <p className="text-sm font-medium text-foreground">Harness</p>
+
+                    <button
+                      type="button"
+                      className="flex h-7 items-center gap-1.5 rounded-lg border border-border px-2.5 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                      disabled={isDetecting}
+                      onClick={() => runHarnessDetection(true)}
+                    >
+                      <RefreshCw
+                        className={cn('size-3.5 shrink-0', isDetecting && 'animate-spin')}
+                        strokeWidth={1.75}
+                      />
+                      <span>重新检测</span>
+                    </button>
+                  </div>
+
+                  {harnesses.map((harness) => (
+                    <HarnessCard
+                      key={harness.id}
+                      harness={harness}
+                      enabled={enabledHarnesses[harness.id] === true}
+                      expanded={expandedHarness === harness.id}
+                      isDetecting={isDetecting}
+                      detectionError={detectionError}
+                      selectedModels={selectedHarnessModels[harness.id] ?? []}
+                      onEnabledChange={(enabled) => handleHarnessEnabledChange(harness.id, enabled)}
+                      onExpandedChange={(expanded) =>
+                        handleHarnessExpandedChange(harness.id, expanded)
+                      }
+                      onSelectedModelsChange={(models) =>
+                        handleHarnessModelsChange(harness.id, models)
+                      }
+                    />
+                  ))}
                 </div>
               )}
             </div>

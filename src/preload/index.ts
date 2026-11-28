@@ -1,8 +1,23 @@
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer, type IpcRendererEvent } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
+import type { HarnessInfo } from '../shared/harness'
+
 // Custom APIs for renderer
-const api = {}
+const api = {
+  harness: {
+    detect: (refresh = false): Promise<HarnessInfo[]> =>
+      ipcRenderer.invoke('harness:detect', refresh),
+    onUpdated: (callback: (harnesses: HarnessInfo[]) => void): (() => void) => {
+      const listener = (_event: IpcRendererEvent, harnesses: HarnessInfo[]): void => {
+        callback(harnesses)
+      }
+
+      ipcRenderer.on('harness:updated', listener)
+      return () => ipcRenderer.removeListener('harness:updated', listener)
+    }
+  }
+}
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise

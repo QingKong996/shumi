@@ -11,7 +11,7 @@ export default defineConfig({
   },
   test: {
     clearMocks: true,
-    include: ['src/renderer/src/**/*.{test,spec}.{ts,tsx}'],
+    include: ['src/main/**/*.{test,spec}.ts', 'src/renderer/src/**/*.{test,spec}.{ts,tsx}'],
     passWithNoTests: true
   }
 })
