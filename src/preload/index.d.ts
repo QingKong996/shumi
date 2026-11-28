@@ -1,5 +1,6 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
 
+import type { ShumiAgentApi } from '../shared/agent/api'
 import type { HarnessInfo } from '../shared/harness'
 
 type ShumiAPI = {
@@ -7,6 +8,7 @@ type ShumiAPI = {
     detect: (refresh?: boolean) => Promise<HarnessInfo[]>
     onUpdated: (callback: (harnesses: HarnessInfo[]) => void) => () => void
   }
+  agent: ShumiAgentApi
 }
 
 declare global {
