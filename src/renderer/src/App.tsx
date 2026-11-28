@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import AppSidebar from '@/components/app-sidebar'
 import SettingsDialog from '@/components/settings-dialog'
 import WorkspacePage from '@/components/workspace-page'
+import { useAgentChat } from '@/hooks/use-agent-chat'
 import { useProjects } from '@/hooks/use-projects'
 import { useTheme } from '@/hooks/use-theme'
 
@@ -27,10 +28,19 @@ function App(): React.JSX.Element {
   const { t } = useTranslation()
   const { theme, setTheme } = useTheme()
   const projects = useProjects()
+  const agentChat = useAgentChat()
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [initialSidebarWidth] = useState(getInitialSidebarWidth)
 
   const deleteProject = (projectId: string): void => {
+    const project = projects.projects.find((entry) => entry.id === projectId)
+
+    if (project) {
+      agentChat.removeWorkers(
+        project.workspaces.flatMap((workspace) => workspace.workers.map((worker) => worker.id))
+      )
+    }
+
     projects.deleteProject(projectId)
   }
 
@@ -77,7 +87,28 @@ function App(): React.JSX.Element {
         />
 
         <Panel id="workspace" minSize={360} className="min-h-0 min-w-0">
-          <WorkspacePage activeWorkspaceId={projects.activeWorkspaceId ?? ''} />
+          <WorkspacePage
+            project={projects.activeProject}
+            workspace={projects.activeWorkspace}
+            activeWorker={projects.activeWorker}
+            agentChat={agentChat}
+            onOptionsChange={async (options) => {
+              const worker = projects.activeWorker
+
+              if (!projects.activeWorkspace || !worker) {
+                return false
+              }
+
+              const workspaceId = projects.activeWorkspace.id
+              const applied = await agentChat.setOptions(worker.id, options)
+
+              if (applied) {
+                projects.updateWorkerOptions(workspaceId, worker.id, options)
+              }
+
+              return applied
+            }}
+          />
         </Panel>
       </Group>
 

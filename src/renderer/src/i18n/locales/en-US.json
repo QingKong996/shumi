@@ -27,14 +27,56 @@
     "create": "New workspace",
     "createIn": "New workspace in {{project}}",
     "name": "Workspace name",
-    "namePlaceholder": "e.g. main"
+    "namePlaceholder": "e.g. main",
+    "noneSelected": "No workspace selected"
   },
   "worker": {
     "create": "Add worker",
     "createIn": "Add worker to {{workspace}}",
     "detecting": "Detecting harnesses",
     "detectionError": "Harness detection failed",
-    "noHarness": "No harness is available"
+    "noHarness": "No harness is available",
+    "empty": "This workspace has no workers"
+  },
+  "chat": {
+    "empty": "Start a conversation",
+    "placeholder": "Ask anything...",
+    "sessionEnded": "This session has ended. Create a new worker.",
+    "model": "Model",
+    "models": "Models",
+    "reasoningProcess": "Reasoning",
+    "reasoningLevels": {
+      "off": "Off",
+      "none": "Off",
+      "minimal": "Minimal",
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "xhigh": "Extra high",
+      "max": "Maximum",
+      "ultra": "Ultra"
+    },
+    "send": "Send message",
+    "stop": "Stop generation",
+    "submit": "Submit",
+    "reasoning": "Reasoning",
+    "answerPlaceholder": "Type an answer",
+    "toolInput": "Input",
+    "toolOutput": "Output",
+    "status": {
+      "idle": "Idle",
+      "starting": "Starting",
+      "running": "Running",
+      "stopping": "Stopping",
+      "ended": "Ended",
+      "failed": "Failed"
+    },
+    "toolStatus": {
+      "running": "Running",
+      "completed": "Completed",
+      "failed": "Failed",
+      "cancelled": "Cancelled"
+    }
   },
   "settings": {
     "title": "Settings",
