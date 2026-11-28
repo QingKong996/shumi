@@ -3,8 +3,38 @@
     "resizeSidebar": "调整侧栏宽度"
   },
   "sidebar": {
+    "projects": "项目",
     "navigation": "项目与工作区",
     "settings": "设置"
+  },
+  "common": {
+    "close": "关闭",
+    "cancel": "取消"
+  },
+  "project": {
+    "create": "新建项目",
+    "name": "项目名称",
+    "namePlaceholder": "例如 shumi",
+    "folder": "项目文件夹",
+    "folderPlaceholder": "选择一个文件夹",
+    "browse": "选择",
+    "folderError": "无法选择文件夹",
+    "required": "请填写项目名称并选择文件夹",
+    "delete": "删除项目",
+    "deleteConfirm": "删除项目“{{name}}”及其所有工作区？"
+  },
+  "workspace": {
+    "create": "新建工作区",
+    "createIn": "在 {{project}} 中新建工作区",
+    "name": "工作区名称",
+    "namePlaceholder": "例如 main"
+  },
+  "worker": {
+    "create": "添加 Worker",
+    "createIn": "在 {{workspace}} 中添加 Worker",
+    "detecting": "正在检测 Harness",
+    "detectionError": "Harness 检测失败",
+    "noHarness": "没有可用的 Harness"
   },
   "settings": {
     "title": "设置",

@@ -8,6 +8,9 @@ type ShumiAPI = {
     detect: (refresh?: boolean) => Promise<HarnessInfo[]>
     onUpdated: (callback: (harnesses: HarnessInfo[]) => void) => () => void
   }
+  project: {
+    selectFolder: () => Promise<string | null>
+  }
   agent: ShumiAgentApi
 }
 
