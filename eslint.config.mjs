@@ -1,4 +1,5 @@
 import { defineConfig } from 'eslint/config'
+import { plugin as shadcn } from '@shadcn/lint'
 import tseslint from '@electron-toolkit/eslint-config-ts'
 import eslintConfigPrettier from '@electron-toolkit/eslint-config-prettier'
 import eslintPluginReact from 'eslint-plugin-react'
@@ -26,6 +27,20 @@ export default defineConfig(
     rules: {
       ...eslintPluginReactHooks.configs.recommended.rules,
       ...eslintPluginReactRefresh.configs.vite.rules
+    }
+  },
+  {
+    files: ['src/renderer/src/**/*.{ts,tsx}'],
+    plugins: {
+      shadcn
+    },
+    rules: {
+      'shadcn/no-restyle': ['error', { allow: ['layout'] }],
+      'shadcn/no-raw-colors': 'error',
+      'shadcn/no-arbitrary-values': ['warn', { allow: ['layout'] }],
+      'shadcn/no-inline-styles': 'warn',
+      'shadcn/no-unknown-classes': 'error',
+      'shadcn/require-static-classes': 'error'
     }
   },
   eslintConfigPrettier
