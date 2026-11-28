@@ -60,7 +60,7 @@ function HarnessCard({
 
   return (
     <Collapsible.Root asChild open={expanded} onOpenChange={onExpandedChange}>
-      <div className="group relative overflow-hidden rounded-xl border border-border transition-[border-color,box-shadow] duration-200 hover:border-ring/50 hover:shadow-sm">
+      <div className="group relative overflow-hidden rounded-xl border border-border transition-card duration-200 hover:border-ring/50 hover:shadow-sm">
         <div className="pointer-events-none relative flex items-center gap-3 px-4 py-3">
           <Collapsible.Trigger
             aria-label={t('harness.toggleDetails', { name: harness.name })}
@@ -77,18 +77,22 @@ function HarnessCard({
                 <p className="text-sm font-medium text-foreground">{harness.name}</p>
                 <span
                   className={cn(
-                    'inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-medium',
+                    'inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-11 font-medium',
                     detectionError
-                      ? 'bg-red-500/10 text-red-700 dark:text-red-400'
+                      ? 'bg-danger-solid/10 text-danger-strong'
                       : available
-                        ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
+                        ? 'bg-success-solid/10 text-success'
                         : 'bg-muted text-muted-foreground'
                   )}
                 >
                   <span
                     className={cn(
                       'size-1.5 rounded-full',
-                      detectionError ? 'bg-red-500' : available ? 'bg-emerald-500' : 'bg-current',
+                      detectionError
+                        ? 'bg-danger-solid'
+                        : available
+                          ? 'bg-success-solid'
+                          : 'bg-current',
                       isDetecting && 'animate-pulse'
                     )}
                   />
@@ -100,7 +104,7 @@ function HarnessCard({
 
             <ChevronDown
               className={cn(
-                'ml-auto size-4 shrink-0 text-muted-foreground transition-[color,transform] duration-200 group-hover:text-foreground',
+                'ml-auto size-4 shrink-0 text-muted-foreground transition-icon duration-200 group-hover:text-foreground',
                 expanded && 'rotate-180'
               )}
               strokeWidth={1.75}
@@ -118,10 +122,10 @@ function HarnessCard({
           </Switch.Root>
         </div>
 
-        <Collapsible.Content className="relative z-10 overflow-hidden data-[state=closed]:animate-[collapsible-up_160ms_ease-in] data-[state=open]:animate-[collapsible-down_200ms_ease-out] motion-reduce:animate-none">
+        <Collapsible.Content className="relative z-10 overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down motion-reduce:animate-none">
           <div className="px-4 pb-4 pt-0">
             <div className="flex items-center justify-between gap-4">
-              <span className="text-[13px] font-normal text-muted-foreground">
+              <span className="text-13 font-normal text-muted-foreground">
                 {t('harness.model')}
               </span>
 

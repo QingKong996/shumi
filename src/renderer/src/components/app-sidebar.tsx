@@ -85,11 +85,11 @@ function AppSidebar({
     <>
       <aside className="flex h-full w-full flex-col bg-sidebar text-sidebar-foreground">
         <div className="flex h-12 shrink-0 items-center px-3 pt-1">
-          <span className="px-1 text-[14px] font-semibold tracking-tight">Shumi</span>
+          <span className="px-1 text-14 font-semibold tracking-tight">Shumi</span>
         </div>
 
         <div className="mt-8 flex h-6 shrink-0 items-center justify-between px-3">
-          <span className="text-[11px] font-medium text-muted-foreground">
+          <span className="text-11 font-medium text-muted-foreground">
             {t('sidebar.projects')}
           </span>
           <button
@@ -125,7 +125,7 @@ function AppSidebar({
                     type="button"
                     aria-expanded={isExpanded}
                     className={cn(
-                      'flex h-full min-w-0 flex-1 items-center gap-2 rounded-md px-2 text-left text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
+                      'flex h-full min-w-0 flex-1 items-center gap-2 rounded-md px-2 text-left text-13 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
                       hasActiveWorkspace
                         ? 'font-medium text-sidebar-foreground'
                         : 'text-muted-foreground'
@@ -161,7 +161,7 @@ function AppSidebar({
                       type="button"
                       aria-label={t('project.delete')}
                       title={t('project.delete')}
-                      className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-red-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring dark:hover:text-red-400"
+                      className="flex size-6 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-danger focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                       onClick={() => confirmDeleteProject(project)}
                     >
                       <Trash2 className="size-3.5" strokeWidth={1.75} />
@@ -186,7 +186,7 @@ function AppSidebar({
                               type="button"
                               aria-current={isActive ? 'true' : undefined}
                               className={cn(
-                                'flex h-full min-w-0 flex-1 items-center gap-2 rounded-md px-2 text-left text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
+                                'flex h-full min-w-0 flex-1 items-center gap-2 rounded-md px-2 text-left text-13 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
                                 isActive
                                   ? 'font-medium text-sidebar-accent-foreground'
                                   : 'text-muted-foreground hover:text-sidebar-accent-foreground'
@@ -216,7 +216,7 @@ function AppSidebar({
                                     aria-current={isActiveWorker ? 'page' : undefined}
                                     title={worker.model ?? undefined}
                                     className={cn(
-                                      'flex h-7 w-full min-w-0 items-center gap-2 rounded-md px-2 text-left text-[12px] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
+                                      'flex h-7 w-full min-w-0 items-center gap-2 rounded-md px-2 text-left text-12 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
                                       isActiveWorker
                                         ? 'bg-sidebar-accent font-medium text-sidebar-accent-foreground'
                                         : 'text-muted-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground'
@@ -237,7 +237,7 @@ function AppSidebar({
                     {project.workspaces.length === 0 && (
                       <button
                         type="button"
-                        className="flex h-8 w-full items-center gap-2 rounded-md px-2 text-left text-[13px] text-muted-foreground transition-colors hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        className="flex h-8 w-full items-center gap-2 rounded-md px-2 text-left text-13 text-muted-foreground transition-colors hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                         onClick={() => setWorkspaceProjectId(project.id)}
                       >
                         <Plus className="size-3.5 shrink-0" strokeWidth={1.75} />
@@ -254,7 +254,7 @@ function AppSidebar({
         <div className="mt-auto p-2">
           <button
             type="button"
-            className="flex h-8 w-full items-center gap-2 rounded-md px-2 text-left text-[13px] text-muted-foreground transition-colors hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            className="flex h-8 w-full items-center gap-2 rounded-md px-2 text-left text-13 text-muted-foreground transition-colors hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             onClick={onOpenSettings}
           >
             <Settings className="size-4 shrink-0" strokeWidth={1.75} />

@@ -76,7 +76,7 @@ function ModelSelector({
           type="button"
           aria-label={ariaLabel}
           className={cn(
-            'flex h-8 w-56 items-center gap-2 overflow-hidden whitespace-nowrap rounded-lg border border-border bg-background px-3 text-[13px] font-normal text-foreground outline-none transition-colors hover:border-ring/60 focus-visible:ring-1 focus-visible:ring-ring data-[state=open]:border-ring/60 disabled:cursor-not-allowed disabled:opacity-50',
+            'flex h-8 w-56 items-center gap-2 overflow-hidden whitespace-nowrap rounded-lg border border-border bg-background px-3 text-13 font-normal text-foreground outline-none transition-colors hover:border-ring/60 focus-visible:ring-1 focus-visible:ring-ring data-[state=open]:border-ring/60 disabled:cursor-not-allowed disabled:opacity-50',
             className
           )}
         >
@@ -87,7 +87,7 @@ function ModelSelector({
               </span>
               <span className="min-w-0 flex-1 truncate text-left">{primaryModel.name}</span>
               {selectedModels.length > 1 && (
-                <span className="shrink-0 text-[13px] text-muted-foreground">
+                <span className="shrink-0 text-13 text-muted-foreground">
                   +{selectedModels.length - 1}
                 </span>
               )}
@@ -106,7 +106,7 @@ function ModelSelector({
           align="end"
           sideOffset={4}
           collisionPadding={8}
-          className="z-[60] w-[var(--radix-popover-trigger-width)] origin-[var(--radix-popover-content-transform-origin)] overflow-hidden rounded-lg border border-border bg-surface text-[13px] font-normal shadow-lg outline-none data-[state=closed]:animate-[select-out_100ms_ease-in] data-[state=open]:animate-[select-in_140ms_ease-out] motion-reduce:animate-none"
+          className="z-[60] w-[var(--radix-popover-trigger-width)] origin-[var(--radix-popover-content-transform-origin)] overflow-hidden rounded-lg border border-border bg-surface text-13 font-normal shadow-lg outline-none data-[state=closed]:animate-select-out data-[state=open]:animate-select-in motion-reduce:animate-none"
         >
           <div className="max-h-56 overflow-y-auto p-1">
             {models.map((model) => {
@@ -118,7 +118,7 @@ function ModelSelector({
                   type="button"
                   aria-pressed={selected}
                   className={cn(
-                    'flex w-full min-w-0 items-center gap-2 whitespace-nowrap rounded-md px-2 py-1.5 text-left text-[13px] font-normal text-foreground outline-none transition-colors hover:bg-accent focus-visible:bg-accent',
+                    'flex w-full min-w-0 items-center gap-2 whitespace-nowrap rounded-md px-2 py-1.5 text-left text-13 font-normal text-foreground outline-none transition-colors hover:bg-accent focus-visible:bg-accent',
                     selected && 'bg-accent/50'
                   )}
                   onClick={() => handleToggle(model.value)}

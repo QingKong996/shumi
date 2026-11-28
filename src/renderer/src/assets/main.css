@@ -17,6 +17,12 @@
   --color-border-strong: var(--border-strong);
   --color-composer: var(--composer);
   --color-ring: var(--ring);
+  --color-danger: var(--danger);
+  --color-danger-strong: var(--danger-strong);
+  --color-danger-solid: var(--danger-solid);
+  --color-success: var(--success);
+  --color-success-solid: var(--success-solid);
+  --color-warning: var(--warning);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-accent: var(--sidebar-accent);
@@ -26,6 +32,20 @@
   --radius-md: var(--radius);
   --radius-lg: calc(var(--radius) + 2px);
   --radius-xl: calc(var(--radius) + 4px);
+  --radius-message: 14px;
+  --text-10: 10px;
+  --text-11: 11px;
+  --text-12: 12px;
+  --text-13: 13px;
+  --text-14: 14px;
+  --text-15: 15px;
+  --leading-reading: 1.8;
+  --shadow-composer: 0 2px 8px rgb(0 0 0 / 0.03);
+  --shadow-popover: var(--popover-shadow);
+  --animate-select-out: select-out 100ms ease-in;
+  --animate-select-in: select-in 140ms ease-out;
+  --animate-collapsible-up: collapsible-up 160ms ease-in;
+  --animate-collapsible-down: collapsible-down 200ms ease-out;
 }
 
 :root {
@@ -44,6 +64,13 @@
   --border-strong: #d8d8dc;
   --composer: #ffffff;
   --ring: #a3a3a3;
+  --danger: oklch(57.7% 0.245 27.325);
+  --danger-strong: oklch(50.5% 0.213 27.518);
+  --danger-solid: oklch(63.7% 0.237 25.331);
+  --success: oklch(50.8% 0.118 165.612);
+  --success-solid: oklch(69.6% 0.17 162.48);
+  --warning: oklch(66.6% 0.179 58.318);
+  --popover-shadow: 0 6px 20px rgb(0 0 0 / 0.06);
   --sidebar: #f7f7f7;
   --sidebar-foreground: #171717;
   --sidebar-accent: #eaeaea;
@@ -66,6 +93,13 @@
   --border-strong: #3a3a3e;
   --composer: #232325;
   --ring: #606064;
+  --danger: oklch(70.4% 0.191 22.216);
+  --danger-strong: oklch(70.4% 0.191 22.216);
+  --danger-solid: oklch(63.7% 0.237 25.331);
+  --success: oklch(76.5% 0.177 163.223);
+  --success-solid: oklch(69.6% 0.17 162.48);
+  --warning: oklch(82.8% 0.189 84.429);
+  --popover-shadow: 0 8px 24px rgb(0 0 0 / 0.36);
   --sidebar: #141414;
   --sidebar-foreground: #ededed;
   --sidebar-accent: #2c2c2e;
@@ -141,4 +175,16 @@
     opacity: 0;
     scale: 0.97;
   }
+}
+
+@utility transition-card {
+  transition-property: border-color, box-shadow;
+  transition-timing-function: var(--default-transition-timing-function);
+  transition-duration: var(--default-transition-duration);
+}
+
+@utility transition-icon {
+  transition-property: color, transform;
+  transition-timing-function: var(--default-transition-timing-function);
+  transition-duration: var(--default-transition-duration);
 }
