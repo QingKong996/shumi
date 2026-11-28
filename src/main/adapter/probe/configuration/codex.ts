@@ -27,6 +27,22 @@ function getCodexCatalogEntries(catalog: unknown): Record<string, unknown>[] {
   return entries.filter(isRecord)
 }
 
+function getReasoningLevels(entry: Record<string, unknown>): string[] {
+  if (!Array.isArray(entry.supported_reasoning_levels)) {
+    return []
+  }
+
+  return [
+    ...new Set(
+      entry.supported_reasoning_levels.flatMap((level) => {
+        const effort = isRecord(level) ? getNonEmptyString(level.effort) : null
+
+        return effort ? [effort] : []
+      })
+    )
+  ]
+}
+
 function getCodexModels(config: Record<string, unknown>, codexHome: string): HarnessModelInfo[] {
   const configuredModel = getNonEmptyString(config.model)
   const configuredReasoningEffort = getNonEmptyString(config.model_reasoning_effort)
@@ -40,16 +56,24 @@ function getCodexModels(config: Record<string, unknown>, codexHome: string): Har
       : getCodexCatalogEntries(readJsonValue(join(codexHome, 'models_cache.json')))
   const models = new Map<string, HarnessModelInfo>()
 
-  const addModel = (slug: string, name: string | null, reasoningEffort: string | null): void => {
+  const addModel = (
+    slug: string,
+    name: string | null,
+    reasoningEffort: string | null,
+    reasoningLevels: string[] = []
+  ): void => {
     const separatorIndex = slug.indexOf('/')
     const hasProvider = separatorIndex > 0 && separatorIndex < slug.length - 1
+    const existing = models.get(slug)
 
     models.set(slug, {
       provider: hasProvider ? slug.slice(0, separatorIndex) : '',
       id: hasProvider ? slug.slice(separatorIndex + 1) : slug,
-      name: name ?? models.get(slug)?.name ?? slug,
+      name: name ?? existing?.name ?? slug,
       reasoningEffort:
         slug === configuredModel ? (configuredReasoningEffort ?? reasoningEffort) : reasoningEffort,
+      reasoningLevels:
+        reasoningLevels.length > 0 ? reasoningLevels : (existing?.reasoningLevels ?? []),
       isDefault: slug === configuredModel
     })
   }
@@ -64,7 +88,8 @@ function getCodexModels(config: Record<string, unknown>, codexHome: string): Har
     addModel(
       slug,
       getNonEmptyString(entry.display_name) ?? getNonEmptyString(entry.name),
-      getNonEmptyString(entry.default_reasoning_level)
+      getNonEmptyString(entry.default_reasoning_level),
+      getReasoningLevels(entry)
     )
   }
 

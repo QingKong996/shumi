@@ -5,6 +5,7 @@ export type HarnessModelInfo = {
   id: string
   name: string
   reasoningEffort: string | null
+  reasoningLevels: string[]
   isDefault: boolean
 }
 

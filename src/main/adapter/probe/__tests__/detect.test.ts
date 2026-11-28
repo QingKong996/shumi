@@ -63,6 +63,7 @@ function getModels(harnessId: HarnessId): HarnessInfo['models'] {
       id: 'default-model',
       name: `${harnessId} model`,
       reasoningEffort: null,
+      reasoningLevels: [],
       isDefault: true
     }
   ]

@@ -4,7 +4,7 @@ import { join } from 'node:path'
 
 import type { HarnessId, HarnessInfo, HarnessModelInfo } from '../../../shared/harness'
 
-const CACHE_VERSION = 2
+const CACHE_VERSION = 3
 const CACHE_DIRECTORY = join(homedir(), '.shumi')
 const CACHE_PATH = join(CACHE_DIRECTORY, 'harness-cache.json')
 const HARNESS_IDS = new Set<HarnessId>(['pi', 'codex'])
@@ -38,6 +38,8 @@ function isHarnessModelInfo(value: unknown): value is HarnessModelInfo {
     typeof value.id === 'string' &&
     typeof value.name === 'string' &&
     (value.reasoningEffort === null || typeof value.reasoningEffort === 'string') &&
+    Array.isArray(value.reasoningLevels) &&
+    value.reasoningLevels.every((level) => typeof level === 'string') &&
     typeof value.isDefault === 'boolean'
   )
 }

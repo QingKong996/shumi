@@ -48,7 +48,12 @@ describe('Pi model configuration', () => {
     writeJson(join(temporaryDirectory.path, 'models-store.json'), {
       openai: {
         models: [
-          { id: 'gpt-5', name: 'GPT-5' },
+          {
+            id: 'gpt-5',
+            name: 'GPT-5',
+            reasoning: true,
+            thinkingLevelMap: { low: 'low', high: 'high', max: null }
+          },
           { id: 'image-gen', name: 'Image Gen', type: 'image' }
         ]
       },
@@ -70,6 +75,7 @@ describe('Pi model configuration', () => {
     expect(modelsByValue.get('openai/gpt-5')).toMatchObject({
       name: 'GPT-5',
       reasoningEffort: 'medium',
+      reasoningLevels: ['low', 'high'],
       isDefault: true
     })
     expect(modelsByValue.get('acme/reasoner')).toMatchObject({
@@ -114,7 +120,8 @@ describe('Codex model configuration', () => {
         {
           slug: 'openai/gpt-5',
           display_name: 'GPT-5',
-          default_reasoning_level: 'medium'
+          default_reasoning_level: 'medium',
+          supported_reasoning_levels: [{ effort: 'low' }, { effort: 'medium' }, { effort: 'high' }]
         },
         {
           id: 'openai/gpt-mini',
@@ -130,6 +137,7 @@ describe('Codex model configuration', () => {
     expect(modelsByValue.get('openai/gpt-5')).toMatchObject({
       name: 'GPT-5',
       reasoningEffort: 'high',
+      reasoningLevels: ['low', 'medium', 'high'],
       isDefault: true
     })
     expect(modelsByValue.get('openai/gpt-mini')).toMatchObject({

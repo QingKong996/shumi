@@ -67,7 +67,7 @@ describe('harness cache', () => {
       }
     })
     expect(JSON.parse(readFileSync(cachePath(), 'utf8'))).toMatchObject({
-      version: 2,
+      version: 3,
       harnesses
     })
   })
