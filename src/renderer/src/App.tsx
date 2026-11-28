@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Group, Panel, Separator } from 'react-resizable-panels'
+import { useTranslation } from 'react-i18next'
 
 import AppSidebar from '@/components/app-sidebar'
 import SettingsDialog from '@/components/settings-dialog'
@@ -23,6 +24,7 @@ function getInitialSidebarWidth(): number {
 }
 
 function App(): React.JSX.Element {
+  const { t } = useTranslation()
   const { theme, setTheme } = useTheme()
   const [activeWorkspaceId, setActiveWorkspaceId] = useState(
     defaultProjects[0]?.workspaces[0]?.id ?? ''
@@ -62,7 +64,7 @@ function App(): React.JSX.Element {
 
         <Separator
           id="sidebar-resizer"
-          aria-label="调整侧栏宽度"
+          aria-label={t('app.resizeSidebar')}
           className="relative z-10 w-px shrink-0 cursor-col-resize bg-sidebar-border outline-none transition-colors hover:bg-foreground/30 focus-visible:bg-foreground/50 data-[separator=active]:bg-foreground/45"
         />
 

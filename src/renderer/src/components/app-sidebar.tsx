@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ChevronDown, ChevronRight, Folder, Layers, Settings } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import type { ProjectItem } from '@/lib/projects'
 import { cn } from '@/lib/utils'
@@ -17,6 +18,7 @@ function AppSidebar({
   onSelectWorkspace,
   onOpenSettings
 }: SidebarProps): React.JSX.Element {
+  const { t } = useTranslation()
   const [expandedProjectIds, setExpandedProjectIds] = useState<Set<string>>(
     () => new Set(projects[0] ? [projects[0].id] : [])
   )
@@ -41,7 +43,10 @@ function AppSidebar({
         <span className="text-[15px] font-semibold tracking-tight">Shumi</span>
       </div>
 
-      <nav className="flex-1 space-y-1 overflow-y-auto px-2.5 py-1" aria-label="项目与工作区">
+      <nav
+        className="flex-1 space-y-1 overflow-y-auto px-2.5 py-1"
+        aria-label={t('sidebar.navigation')}
+      >
         {projects.map((project) => {
           const isExpanded = expandedProjectIds.has(project.id)
           const hasActiveWorkspace = project.workspaces.some(
@@ -113,7 +118,7 @@ function AppSidebar({
           onClick={onOpenSettings}
         >
           <Settings className="size-4 shrink-0" strokeWidth={1.75} />
-          <span>设置</span>
+          <span>{t('sidebar.settings')}</span>
         </button>
       </div>
     </aside>

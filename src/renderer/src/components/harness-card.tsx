@@ -1,6 +1,7 @@
 import { Codex, Pi } from '@lobehub/icons'
 import { ChevronDown } from 'lucide-react'
 import { Collapsible, Switch } from 'radix-ui'
+import { useTranslation } from 'react-i18next'
 
 import { cn } from '@/lib/utils'
 import {
@@ -22,38 +23,6 @@ type HarnessCardProps = {
   onSelectedModelsChange: (models: string[]) => void
 }
 
-function getHarnessStatus(
-  harness: HarnessInfo,
-  isDetecting: boolean,
-  detectionError: boolean
-): string {
-  if (isDetecting) {
-    return '检测中'
-  }
-
-  if (detectionError) {
-    return '检测失败'
-  }
-
-  return harness.installed ? '已安装' : '未安装'
-}
-
-function getHarnessVersionLabel(
-  harness: HarnessInfo,
-  isDetecting: boolean,
-  detectionError: boolean
-): string | null {
-  if (isDetecting || detectionError || !harness.installed) {
-    return null
-  }
-
-  if (harness.version) {
-    return `版本 ${harness.version}`
-  }
-
-  return harness.versionPending ? null : '版本未知'
-}
-
 function HarnessCard({
   harness,
   enabled,
@@ -65,9 +34,23 @@ function HarnessCard({
   onExpandedChange,
   onSelectedModelsChange
 }: HarnessCardProps): React.JSX.Element {
+  const { t } = useTranslation()
   const available = harness.installed
-  const status = getHarnessStatus(harness, isDetecting, detectionError)
-  const versionLabel = getHarnessVersionLabel(harness, isDetecting, detectionError)
+  const status = isDetecting
+    ? t('harness.status.detecting')
+    : detectionError
+      ? t('harness.status.error')
+      : available
+        ? t('harness.status.installed')
+        : t('harness.status.notInstalled')
+  const versionLabel =
+    isDetecting || detectionError || !available
+      ? null
+      : harness.version
+        ? t('harness.version', { version: harness.version })
+        : harness.versionPending
+          ? null
+          : t('harness.unknownVersion')
   const HarnessIcon = harness.id === 'pi' ? Pi : Codex
   const models: ModelSelectorOption[] = harness.models.map((model: HarnessModelInfo) => ({
     value: getHarnessModelValue(model),
@@ -80,7 +63,7 @@ function HarnessCard({
       <div className="group relative overflow-hidden rounded-xl border border-border transition-[border-color,box-shadow] duration-200 hover:border-ring/50 hover:shadow-sm">
         <div className="pointer-events-none relative flex items-center gap-3 px-4 py-3">
           <Collapsible.Trigger
-            aria-label={`切换 ${harness.name} 详情`}
+            aria-label={t('harness.toggleDetails', { name: harness.name })}
             className="pointer-events-auto absolute inset-0 z-0 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
           />
 
@@ -125,7 +108,7 @@ function HarnessCard({
           </div>
 
           <Switch.Root
-            aria-label={`启用 ${harness.name} Harness`}
+            aria-label={t('harness.enable', { name: harness.name })}
             checked={available && enabled}
             className="pointer-events-auto relative z-10 h-5 w-9 shrink-0 rounded-full bg-muted outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface data-[state=checked]:bg-foreground disabled:cursor-not-allowed disabled:opacity-40"
             disabled={!available || isDetecting}
@@ -138,13 +121,15 @@ function HarnessCard({
         <Collapsible.Content className="relative z-10 overflow-hidden data-[state=closed]:animate-[collapsible-up_160ms_ease-in] data-[state=open]:animate-[collapsible-down_200ms_ease-out] motion-reduce:animate-none">
           <div className="px-4 pb-4 pt-0">
             <div className="flex items-center justify-between gap-4">
-              <span className="text-[13px] font-normal text-muted-foreground">模型</span>
+              <span className="text-[13px] font-normal text-muted-foreground">
+                {t('harness.model')}
+              </span>
 
               <ModelSelector
-                ariaLabel={`选择 ${harness.name} 模型`}
+                ariaLabel={t('harness.selectModel', { name: harness.name })}
                 models={models}
                 value={selectedModels}
-                placeholder="暂无已配置模型"
+                placeholder={t('harness.noModels')}
                 onChange={onSelectedModelsChange}
               />
             </div>

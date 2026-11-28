@@ -1,8 +1,19 @@
 import { useEffect, useState } from 'react'
-import { Monitor, Moon, Palette, RefreshCw, Sun, Terminal, X, type LucideIcon } from 'lucide-react'
+import {
+  Monitor,
+  Moon,
+  RefreshCw,
+  SlidersHorizontal,
+  Sun,
+  Terminal,
+  X,
+  type LucideIcon
+} from 'lucide-react'
 import { Dialog } from 'radix-ui'
+import { useTranslation } from 'react-i18next'
 
 import type { Theme } from '@/hooks/use-theme'
+import { normalizeLanguage, SUPPORTED_LANGUAGES } from '@/i18n'
 import { cn } from '@/lib/utils'
 import { getHarnessModelValue, type HarnessId, type HarnessInfo } from '../../../shared/harness'
 import HarnessCard from './harness-card'
@@ -14,25 +25,25 @@ type SettingsDialogProps = {
   onThemeChange: (theme: Theme) => void
 }
 
-type SettingsCategory = 'appearance' | 'harness'
+type SettingsCategory = 'general' | 'harness'
 
 const categories: Array<{
   id: SettingsCategory
-  label: string
+  labelKey: 'settings.categories.general' | 'settings.categories.harness'
   icon: LucideIcon
 }> = [
-  { id: 'appearance', label: '外观', icon: Palette },
-  { id: 'harness', label: 'Harness', icon: Terminal }
+  { id: 'general', labelKey: 'settings.categories.general', icon: SlidersHorizontal },
+  { id: 'harness', labelKey: 'settings.categories.harness', icon: Terminal }
 ]
 
 const themeOptions: Array<{
   value: Theme
-  label: string
+  labelKey: 'settings.themes.light' | 'settings.themes.dark' | 'settings.themes.system'
   icon: LucideIcon
 }> = [
-  { value: 'light', label: '浅色', icon: Sun },
-  { value: 'dark', label: '深色', icon: Moon },
-  { value: 'system', label: '跟随系统', icon: Monitor }
+  { value: 'light', labelKey: 'settings.themes.light', icon: Sun },
+  { value: 'dark', labelKey: 'settings.themes.dark', icon: Moon },
+  { value: 'system', labelKey: 'settings.themes.system', icon: Monitor }
 ]
 
 function reconcileHarnessModels(
@@ -65,7 +76,8 @@ function SettingsDialog({
   onOpenChange,
   onThemeChange
 }: SettingsDialogProps): React.JSX.Element {
-  const [activeCategory, setActiveCategory] = useState<SettingsCategory>('appearance')
+  const { t, i18n } = useTranslation()
+  const [activeCategory, setActiveCategory] = useState<SettingsCategory>('general')
   const [harnesses, setHarnesses] = useState<HarnessInfo[]>([])
   const [isDetecting, setIsDetecting] = useState(false)
   const [detectionError, setDetectionError] = useState(false)
@@ -74,6 +86,7 @@ function SettingsDialog({
   const [selectedHarnessModels, setSelectedHarnessModels] = useState<
     Partial<Record<HarnessId, string[]>>
   >({})
+  const activeLanguage = normalizeLanguage(i18n.resolvedLanguage ?? i18n.language)
 
   useEffect(() => {
     return window.api.harness.onUpdated((detectedHarnesses) => {
@@ -114,7 +127,7 @@ function SettingsDialog({
 
   const handleOpenChange = (nextOpen: boolean): void => {
     if (!nextOpen) {
-      setActiveCategory('appearance')
+      setActiveCategory('general')
       setEnabledHarnesses({})
       setExpandedHarness(null)
       setSelectedHarnessModels({})
@@ -150,12 +163,14 @@ function SettingsDialog({
           className="fixed left-1/2 top-1/2 z-50 flex h-[440px] max-h-[calc(100vh-2rem)] w-[calc(100%-2rem)] max-w-[680px] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-xl border border-border bg-surface text-foreground outline-none"
         >
           <header className="flex h-12 shrink-0 items-center justify-between border-b border-border px-5">
-            <Dialog.Title className="text-[15px] font-medium tracking-tight">设置</Dialog.Title>
+            <Dialog.Title className="text-[15px] font-medium tracking-tight">
+              {t('settings.title')}
+            </Dialog.Title>
             <Dialog.Close asChild>
               <button
                 type="button"
                 className="flex size-7 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                aria-label="关闭设置"
+                aria-label={t('settings.close')}
               >
                 <X className="size-4" strokeWidth={1.75} />
               </button>
@@ -164,7 +179,7 @@ function SettingsDialog({
 
           <div className="flex min-h-0 flex-1">
             <aside className="w-44 shrink-0 border-r border-border p-2.5">
-              <nav className="space-y-1" aria-label="设置分类">
+              <nav className="space-y-1" aria-label={t('settings.categoriesLabel')}>
                 {categories.map((category) => {
                   const Icon = category.icon
                   const isActive = activeCategory === category.id
@@ -183,7 +198,7 @@ function SettingsDialog({
                       onClick={() => handleCategoryChange(category.id)}
                     >
                       <Icon className="size-4 shrink-0" strokeWidth={1.75} />
-                      <span>{category.label}</span>
+                      <span>{t(category.labelKey)}</span>
                     </button>
                   )
                 })}
@@ -191,12 +206,16 @@ function SettingsDialog({
             </aside>
 
             <div className="min-w-0 flex-1 overflow-y-auto p-5">
-              {activeCategory === 'appearance' && (
+              {activeCategory === 'general' && (
                 <div className="space-y-3">
-                  <p className="text-sm font-medium text-foreground">外观</p>
+                  <p className="text-sm font-medium text-foreground">
+                    {t('settings.general.title')}
+                  </p>
 
                   <div className="flex items-center justify-between gap-4 rounded-xl border border-border px-4 py-3">
-                    <span className="text-sm text-muted-foreground">主题</span>
+                    <span className="text-sm text-muted-foreground">
+                      {t('settings.general.theme')}
+                    </span>
                     <div className="inline-flex rounded-lg border border-border bg-background p-0.5">
                       {themeOptions.map((option) => {
                         const selected = theme === option.value
@@ -216,7 +235,37 @@ function SettingsDialog({
                             onClick={() => onThemeChange(option.value)}
                           >
                             <Icon className="size-3.5 shrink-0" strokeWidth={1.75} />
-                            <span>{option.label}</span>
+                            <span>{t(option.labelKey)}</span>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between gap-4 rounded-xl border border-border px-4 py-3">
+                    <span className="text-sm text-muted-foreground">
+                      {t('settings.general.language')}
+                    </span>
+                    <div className="inline-flex rounded-lg border border-border bg-background p-0.5">
+                      {SUPPORTED_LANGUAGES.map((language) => {
+                        const selected = activeLanguage === language
+                        const label = language === 'zh-CN' ? t('language.zhCN') : t('language.enUS')
+
+                        return (
+                          <button
+                            key={language}
+                            type="button"
+                            lang={language}
+                            aria-pressed={selected}
+                            className={cn(
+                              'flex h-7 items-center rounded-md px-2.5 text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
+                              selected
+                                ? 'bg-accent font-medium text-accent-foreground'
+                                : 'text-muted-foreground hover:text-foreground'
+                            )}
+                            onClick={() => void i18n.changeLanguage(language)}
+                          >
+                            {label}
                           </button>
                         )
                       })}
@@ -228,7 +277,9 @@ function SettingsDialog({
               {activeCategory === 'harness' && (
                 <div className="space-y-3">
                   <div className="flex items-center justify-between gap-4">
-                    <p className="text-sm font-medium text-foreground">Harness</p>
+                    <p className="text-sm font-medium text-foreground">
+                      {t('settings.harness.title')}
+                    </p>
 
                     <button
                       type="button"
@@ -240,7 +291,7 @@ function SettingsDialog({
                         className={cn('size-3.5 shrink-0', isDetecting && 'animate-spin')}
                         strokeWidth={1.75}
                       />
-                      <span>重新检测</span>
+                      <span>{t('settings.harness.refresh')}</span>
                     </button>
                   </div>
 
