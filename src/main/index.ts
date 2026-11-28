@@ -3,6 +3,17 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { detectHarnesses } from './adapter'
+import { createShumiAgentService } from './agent'
+
+const agentService = createShumiAgentService()
+
+agentService.onEvent((event) => {
+  for (const window of BrowserWindow.getAllWindows()) {
+    if (!window.webContents.isDestroyed()) {
+      window.webContents.send('agent:event', event)
+    }
+  }
+})
 
 function createWindow(): void {
   // Create the browser window.
@@ -59,6 +70,16 @@ app.whenReady().then(() => {
       }
     })
   )
+  ipcMain.handle('agent:start', (_event, input) => agentService.start(input))
+  ipcMain.handle('agent:send', (_event, sessionId, input) => agentService.send(sessionId, input))
+  ipcMain.handle('agent:cancel', (_event, sessionId) => agentService.cancel(sessionId))
+  ipcMain.handle('agent:respond', (_event, sessionId, requestId, response) =>
+    agentService.respond(sessionId, requestId, response)
+  )
+  ipcMain.handle('agent:set-options', (_event, sessionId, options) =>
+    agentService.setOptions(sessionId, options)
+  )
+  ipcMain.handle('agent:stop', (_event, sessionId) => agentService.stop(sessionId))
 
   createWindow()
 
@@ -76,6 +97,18 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
+})
+
+let quitting = false
+
+app.on('before-quit', (event) => {
+  if (quitting) {
+    return
+  }
+
+  event.preventDefault()
+  quitting = true
+  void agentService.dispose().finally(() => app.quit())
 })
 
 // In this file you can include the rest of your app's specific main process
