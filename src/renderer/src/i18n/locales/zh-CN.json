@@ -1,0 +1,54 @@
+{
+  "app": {
+    "resizeSidebar": "调整侧栏宽度"
+  },
+  "sidebar": {
+    "navigation": "项目与工作区",
+    "settings": "设置"
+  },
+  "settings": {
+    "title": "设置",
+    "close": "关闭设置",
+    "categoriesLabel": "设置分类",
+    "categories": {
+      "general": "通用",
+      "harness": "Harness"
+    },
+    "general": {
+      "title": "通用",
+      "theme": "主题",
+      "language": "语言"
+    },
+    "themes": {
+      "light": "浅色",
+      "dark": "深色",
+      "system": "跟随系统"
+    },
+    "harness": {
+      "title": "Harness",
+      "refresh": "重新检测"
+    }
+  },
+  "language": {
+    "zhCN": "简体中文",
+    "enUS": "English"
+  },
+  "harness": {
+    "status": {
+      "detecting": "检测中",
+      "error": "检测失败",
+      "installed": "已安装",
+      "notInstalled": "未安装"
+    },
+    "version": "版本 {{version}}",
+    "unknownVersion": "版本未知",
+    "toggleDetails": "切换 {{name}} 详情",
+    "enable": "启用 {{name}} Harness",
+    "model": "模型",
+    "selectModel": "选择 {{name}} 模型",
+    "noModels": "暂无已配置模型"
+  },
+  "model": {
+    "placeholder": "选择模型"
+  }
+}

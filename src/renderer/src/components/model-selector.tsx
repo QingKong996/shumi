@@ -1,6 +1,7 @@
 import { ModelIcon, modelMappings } from '@lobehub/icons'
 import { Bot, Check, ChevronDown } from 'lucide-react'
 import { Popover } from 'radix-ui'
+import { useTranslation } from 'react-i18next'
 
 import { cn } from '@/lib/utils'
 
@@ -50,9 +51,10 @@ function ModelSelector({
   onChange,
   ariaLabel,
   disabled = false,
-  placeholder = '选择模型',
+  placeholder,
   className
 }: ModelSelectorProps): React.JSX.Element {
+  const { t } = useTranslation()
   const selectedModels = value
     .map((selectedValue) => models.find((model) => model.value === selectedValue))
     .filter((model): model is ModelSelectorOption => model !== undefined)
@@ -92,7 +94,7 @@ function ModelSelector({
             </>
           ) : (
             <span className="min-w-0 flex-1 truncate text-left text-muted-foreground">
-              {placeholder}
+              {placeholder ?? t('model.placeholder')}
             </span>
           )}
           <ChevronDown className="size-3.5 shrink-0 text-muted-foreground" strokeWidth={1.75} />

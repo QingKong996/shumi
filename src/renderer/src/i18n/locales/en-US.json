@@ -1,0 +1,54 @@
+{
+  "app": {
+    "resizeSidebar": "Resize sidebar"
+  },
+  "sidebar": {
+    "navigation": "Projects and workspaces",
+    "settings": "Settings"
+  },
+  "settings": {
+    "title": "Settings",
+    "close": "Close settings",
+    "categoriesLabel": "Settings categories",
+    "categories": {
+      "general": "General",
+      "harness": "Harness"
+    },
+    "general": {
+      "title": "General",
+      "theme": "Theme",
+      "language": "Language"
+    },
+    "themes": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "harness": {
+      "title": "Harness",
+      "refresh": "Rescan"
+    }
+  },
+  "language": {
+    "zhCN": "简体中文",
+    "enUS": "English"
+  },
+  "harness": {
+    "status": {
+      "detecting": "Detecting",
+      "error": "Detection failed",
+      "installed": "Installed",
+      "notInstalled": "Not installed"
+    },
+    "version": "Version {{version}}",
+    "unknownVersion": "Unknown version",
+    "toggleDetails": "Toggle {{name}} details",
+    "enable": "Enable {{name}} Harness",
+    "model": "Model",
+    "selectModel": "Select {{name}} model",
+    "noModels": "No models configured"
+  },
+  "model": {
+    "placeholder": "Select model"
+  }
+}
