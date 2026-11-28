@@ -5,13 +5,13 @@ import { useTranslation } from 'react-i18next'
 import AppSidebar from '@/components/app-sidebar'
 import SettingsDialog from '@/components/settings-dialog'
 import WorkspacePage from '@/components/workspace-page'
+import { useProjects } from '@/hooks/use-projects'
 import { useTheme } from '@/hooks/use-theme'
-import { defaultProjects } from '@/lib/projects'
 
-const SIDEBAR_DEFAULT_WIDTH = 224
-const SIDEBAR_MIN_WIDTH = 180
+const SIDEBAR_DEFAULT_WIDTH = 180
+const SIDEBAR_MIN_WIDTH = 168
 const SIDEBAR_MAX_WIDTH = 360
-const SIDEBAR_WIDTH_STORAGE_KEY = 'shumi:sidebar-width'
+const SIDEBAR_WIDTH_STORAGE_KEY = 'shumi:sidebar-width:v2'
 
 function getInitialSidebarWidth(): number {
   const storedWidth = Number(window.localStorage.getItem(SIDEBAR_WIDTH_STORAGE_KEY))
@@ -26,11 +26,13 @@ function getInitialSidebarWidth(): number {
 function App(): React.JSX.Element {
   const { t } = useTranslation()
   const { theme, setTheme } = useTheme()
-  const [activeWorkspaceId, setActiveWorkspaceId] = useState(
-    defaultProjects[0]?.workspaces[0]?.id ?? ''
-  )
+  const projects = useProjects()
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [initialSidebarWidth] = useState(getInitialSidebarWidth)
+
+  const deleteProject = (projectId: string): void => {
+    projects.deleteProject(projectId)
+  }
 
   return (
     <main className="h-screen w-screen overflow-hidden bg-background text-foreground">
@@ -55,9 +57,15 @@ function App(): React.JSX.Element {
           }}
         >
           <AppSidebar
-            projects={defaultProjects}
-            activeWorkspaceId={activeWorkspaceId}
-            onSelectWorkspace={setActiveWorkspaceId}
+            projects={projects.projects}
+            activeWorkspaceId={projects.activeWorkspaceId}
+            activeWorkerId={projects.activeWorkerId}
+            onSelectWorkspace={projects.setActiveWorkspaceId}
+            onSelectWorker={projects.setActiveWorker}
+            onCreateProject={projects.createProject}
+            onCreateWorkspace={projects.createWorkspace}
+            onAddWorker={projects.addWorker}
+            onDeleteProject={deleteProject}
             onOpenSettings={() => setSettingsOpen(true)}
           />
         </Panel>
@@ -65,11 +73,11 @@ function App(): React.JSX.Element {
         <Separator
           id="sidebar-resizer"
           aria-label={t('app.resizeSidebar')}
-          className="relative z-10 w-px shrink-0 cursor-col-resize bg-sidebar-border outline-none transition-colors hover:bg-foreground/30 focus-visible:bg-foreground/50 data-[separator=active]:bg-foreground/45"
+          className="relative z-10 w-px shrink-0 cursor-col-resize bg-transparent outline-none transition-colors hover:bg-foreground/20 focus-visible:bg-foreground/35 data-[separator=active]:bg-foreground/30"
         />
 
         <Panel id="workspace" minSize={360} className="min-h-0 min-w-0">
-          <WorkspacePage activeWorkspaceId={activeWorkspaceId} />
+          <WorkspacePage activeWorkspaceId={projects.activeWorkspaceId ?? ''} />
         </Panel>
       </Group>
 

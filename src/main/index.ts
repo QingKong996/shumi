@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, dialog, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -70,6 +70,13 @@ app.whenReady().then(() => {
       }
     })
   )
+  ipcMain.handle('project:select-folder', async () => {
+    const result = await dialog.showOpenDialog({
+      properties: ['openDirectory']
+    })
+
+    return result.canceled ? null : (result.filePaths[0] ?? null)
+  })
   ipcMain.handle('agent:start', (_event, input) => agentService.start(input))
   ipcMain.handle('agent:send', (_event, sessionId, input) => agentService.send(sessionId, input))
   ipcMain.handle('agent:cancel', (_event, sessionId) => agentService.cancel(sessionId))

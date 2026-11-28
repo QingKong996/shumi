@@ -3,8 +3,38 @@
     "resizeSidebar": "Resize sidebar"
   },
   "sidebar": {
+    "projects": "Projects",
     "navigation": "Projects and workspaces",
     "settings": "Settings"
+  },
+  "common": {
+    "close": "Close",
+    "cancel": "Cancel"
+  },
+  "project": {
+    "create": "New project",
+    "name": "Project name",
+    "namePlaceholder": "e.g. shumi",
+    "folder": "Project folder",
+    "folderPlaceholder": "Choose a folder",
+    "browse": "Choose",
+    "folderError": "Could not choose a folder",
+    "required": "Enter a project name and choose a folder",
+    "delete": "Delete project",
+    "deleteConfirm": "Delete project \"{{name}}\" and all of its workspaces?"
+  },
+  "workspace": {
+    "create": "New workspace",
+    "createIn": "New workspace in {{project}}",
+    "name": "Workspace name",
+    "namePlaceholder": "e.g. main"
+  },
+  "worker": {
+    "create": "Add worker",
+    "createIn": "Add worker to {{workspace}}",
+    "detecting": "Detecting harnesses",
+    "detectionError": "Harness detection failed",
+    "noHarness": "No harness is available"
   },
   "settings": {
     "title": "Settings",

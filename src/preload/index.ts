@@ -9,6 +9,9 @@ type ShumiPreloadApi = {
     detect: (refresh?: boolean) => Promise<HarnessInfo[]>
     onUpdated: (callback: (harnesses: HarnessInfo[]) => void) => () => void
   }
+  project: {
+    selectFolder: () => Promise<string | null>
+  }
   agent: ShumiAgentApi
 }
 
@@ -25,6 +28,9 @@ const api: ShumiPreloadApi = {
       ipcRenderer.on('harness:updated', listener)
       return () => ipcRenderer.removeListener('harness:updated', listener)
     }
+  },
+  project: {
+    selectFolder: (): Promise<string | null> => ipcRenderer.invoke('project:select-folder')
   },
   agent: {
     start: (input) => ipcRenderer.invoke('agent:start', input),
