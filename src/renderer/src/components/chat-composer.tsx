@@ -70,7 +70,7 @@ function ChatComposer({
 
   return (
     <form
-      className="mx-auto flex w-full max-w-[660px] flex-col gap-2 rounded-2xl border border-border-strong bg-composer px-3.5 pt-3 pb-2.5 shadow-[0_2px_8px_rgb(0_0_0/0.03)] transition-colors focus-within:border-foreground/35 dark:shadow-none"
+      className="mx-auto flex w-full max-w-[660px] flex-col gap-2 rounded-2xl border border-border-strong bg-composer px-3.5 pt-3 pb-2.5 shadow-composer transition-colors focus-within:border-foreground/35 dark:shadow-none"
       onSubmit={handleSubmit}
     >
       <textarea

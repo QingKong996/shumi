@@ -70,7 +70,7 @@ function CreateProjectDialog({
           className="fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-[480px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl border border-border bg-surface text-foreground outline-none"
         >
           <header className="flex h-12 items-center justify-between border-b border-border px-5">
-            <Dialog.Title className="text-[15px] font-medium">{t('project.create')}</Dialog.Title>
+            <Dialog.Title className="text-15 font-medium">{t('project.create')}</Dialog.Title>
             <Dialog.Close asChild>
               <button
                 type="button"
@@ -84,7 +84,7 @@ function CreateProjectDialog({
 
           <form className="space-y-4 p-5" onSubmit={submit}>
             <label className="block space-y-1.5">
-              <span className="text-[13px] text-muted-foreground">{t('project.name')}</span>
+              <span className="text-13 text-muted-foreground">{t('project.name')}</span>
               <input
                 autoFocus
                 className={inputClassName}
@@ -95,17 +95,17 @@ function CreateProjectDialog({
             </label>
 
             <label className="block space-y-1.5">
-              <span className="text-[13px] text-muted-foreground">{t('project.folder')}</span>
+              <span className="text-13 text-muted-foreground">{t('project.folder')}</span>
               <div className="flex gap-2">
                 <input
                   readOnly
-                  className={cn(inputClassName, 'min-w-0 flex-1 text-[13px]')}
+                  className={cn(inputClassName, 'min-w-0 flex-1 text-13')}
                   value={folderPath}
                   placeholder={t('project.folderPlaceholder')}
                 />
                 <button
                   type="button"
-                  className="flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-border px-3 text-[13px] text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                  className="flex h-9 shrink-0 items-center gap-1.5 rounded-lg border border-border px-3 text-13 text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                   disabled={pickingFolder}
                   onClick={() => void pickFolder()}
                 >
@@ -119,20 +119,20 @@ function CreateProjectDialog({
               </div>
             </label>
 
-            {error && <p className="text-[13px] text-red-600 dark:text-red-400">{error}</p>}
+            {error && <p className="text-13 text-danger">{error}</p>}
 
             <div className="flex justify-end gap-2 pt-1">
               <Dialog.Close asChild>
                 <button
                   type="button"
-                  className="h-8 rounded-lg px-3 text-[13px] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  className="h-8 rounded-lg px-3 text-13 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 >
                   {t('common.cancel')}
                 </button>
               </Dialog.Close>
               <button
                 type="submit"
-                className="h-8 rounded-lg bg-primary px-3 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:pointer-events-none disabled:opacity-40"
+                className="h-8 rounded-lg bg-primary px-3 text-13 font-medium text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:pointer-events-none disabled:opacity-40"
                 disabled={!name.trim() || !folderPath}
               >
                 {t('project.create')}
@@ -174,7 +174,7 @@ function CreateWorkspaceDialog({
           className="fixed left-1/2 top-1/2 z-50 w-[calc(100%-2rem)] max-w-[400px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl border border-border bg-surface text-foreground outline-none"
         >
           <header className="flex h-12 items-center justify-between border-b border-border px-5">
-            <Dialog.Title className="text-[15px] font-medium">{title}</Dialog.Title>
+            <Dialog.Title className="text-15 font-medium">{title}</Dialog.Title>
             <Dialog.Close asChild>
               <button
                 type="button"
@@ -188,7 +188,7 @@ function CreateWorkspaceDialog({
 
           <form className="space-y-4 p-5" onSubmit={submit}>
             <label className="block space-y-1.5">
-              <span className="text-[13px] text-muted-foreground">{t('workspace.name')}</span>
+              <span className="text-13 text-muted-foreground">{t('workspace.name')}</span>
               <input
                 autoFocus
                 className={inputClassName}
@@ -202,14 +202,14 @@ function CreateWorkspaceDialog({
               <Dialog.Close asChild>
                 <button
                   type="button"
-                  className="h-8 rounded-lg px-3 text-[13px] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  className="h-8 rounded-lg px-3 text-13 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 >
                   {t('common.cancel')}
                 </button>
               </Dialog.Close>
               <button
                 type="submit"
-                className="h-8 rounded-lg bg-primary px-3 text-[13px] font-medium text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:pointer-events-none disabled:opacity-40"
+                className="h-8 rounded-lg bg-primary px-3 text-13 font-medium text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:pointer-events-none disabled:opacity-40"
                 disabled={!name.trim()}
               >
                 {t('workspace.create')}

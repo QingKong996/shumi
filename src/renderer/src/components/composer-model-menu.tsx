@@ -132,7 +132,7 @@ function ComposerModelMenu({
           type="button"
           aria-label={triggerLabel}
           title={triggerLabel}
-          className="flex h-8 min-w-0 max-w-72 shrink items-center justify-start gap-1.5 rounded-lg px-2.5 text-[13px] font-normal whitespace-nowrap text-muted-foreground transition-colors outline-none hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40"
+          className="flex h-8 min-w-0 max-w-72 shrink items-center justify-start gap-1.5 rounded-lg px-2.5 text-13 font-normal whitespace-nowrap text-muted-foreground transition-colors outline-none hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40"
         >
           <span className="min-w-0 truncate text-foreground">
             {selectedModel?.name ?? triggerLabel}
@@ -150,7 +150,7 @@ function ComposerModelMenu({
           align="end"
           sideOffset={8}
           collisionPadding={8}
-          className="z-[60] max-h-80 min-w-56 origin-[var(--radix-dropdown-menu-content-transform-origin)] overflow-y-auto rounded-xl border border-border-strong bg-surface p-1.5 text-foreground shadow-[0_6px_20px_rgb(0_0_0/0.06)] outline-none data-[state=closed]:animate-[select-out_100ms_ease-in] data-[state=open]:animate-[select-in_140ms_ease-out] dark:shadow-[0_8px_24px_rgb(0_0_0/0.36)] motion-reduce:animate-none"
+          className="z-[60] max-h-80 min-w-56 origin-[var(--radix-dropdown-menu-content-transform-origin)] overflow-y-auto rounded-xl border border-border-strong bg-surface p-1.5 text-foreground shadow-popover outline-none data-[state=closed]:animate-select-out data-[state=open]:animate-select-in motion-reduce:animate-none"
         >
           {menuView === 'root' ? (
             <>
@@ -194,7 +194,7 @@ function ComposerModelMenu({
                       {index > 0 && (
                         <DropdownMenu.Separator className="-mx-1 my-1 h-px bg-border" />
                       )}
-                      <DropdownMenu.Label className="px-2.5 py-1.5 text-[11px] font-medium tracking-wide text-muted-foreground">
+                      <DropdownMenu.Label className="px-2.5 py-1.5 text-11 font-medium tracking-wide text-muted-foreground">
                         {group.provider || t('chat.models')}
                       </DropdownMenu.Label>
                       {group.models.map((option) => {

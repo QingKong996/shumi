@@ -163,7 +163,7 @@ function SettingsDialog({
           className="fixed left-1/2 top-1/2 z-50 flex h-[440px] max-h-[calc(100vh-2rem)] w-[calc(100%-2rem)] max-w-[680px] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-xl border border-border bg-surface text-foreground outline-none"
         >
           <header className="flex h-12 shrink-0 items-center justify-between border-b border-border px-5">
-            <Dialog.Title className="text-[15px] font-medium tracking-tight">
+            <Dialog.Title className="text-15 font-medium tracking-tight">
               {t('settings.title')}
             </Dialog.Title>
             <Dialog.Close asChild>
@@ -227,7 +227,7 @@ function SettingsDialog({
                             type="button"
                             aria-pressed={selected}
                             className={cn(
-                              'flex h-7 items-center gap-1.5 rounded-md px-2.5 text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
+                              'flex h-7 items-center gap-1.5 rounded-md px-2.5 text-13 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
                               selected
                                 ? 'bg-accent font-medium text-accent-foreground'
                                 : 'text-muted-foreground hover:text-foreground'
@@ -258,7 +258,7 @@ function SettingsDialog({
                             lang={language}
                             aria-pressed={selected}
                             className={cn(
-                              'flex h-7 items-center rounded-md px-2.5 text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
+                              'flex h-7 items-center rounded-md px-2.5 text-13 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
                               selected
                                 ? 'bg-accent font-medium text-accent-foreground'
                                 : 'text-muted-foreground hover:text-foreground'

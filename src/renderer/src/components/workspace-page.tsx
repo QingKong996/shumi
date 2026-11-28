@@ -82,7 +82,7 @@ function WorkspacePage({
       <section className="flex h-full min-w-0 items-center justify-center bg-background text-muted-foreground">
         <div className="flex flex-col items-center gap-2">
           <Folder className="size-7" strokeWidth={1.5} />
-          <p className="text-[13px]">{t('workspace.noneSelected')}</p>
+          <p className="text-13">{t('workspace.noneSelected')}</p>
         </div>
       </section>
     )
@@ -96,7 +96,7 @@ function WorkspacePage({
             <div className="mx-auto flex w-full max-w-[660px] flex-col gap-5 px-5 pb-6 pt-6">
               {chat.entries.length === 0 && (
                 <div className="flex flex-col items-center py-24 text-center">
-                  <p className="text-[13px] text-muted-foreground">{t('chat.empty')}</p>
+                  <p className="text-13 text-muted-foreground">{t('chat.empty')}</p>
                 </div>
               )}
 
@@ -136,7 +136,7 @@ function WorkspacePage({
         <div className="flex flex-1 items-center justify-center">
           <div className="flex flex-col items-center gap-3 text-center">
             <Wrench className="size-7 text-muted-foreground" strokeWidth={1.5} />
-            <p className="text-[13px] text-muted-foreground">{t('worker.empty')}</p>
+            <p className="text-13 text-muted-foreground">{t('worker.empty')}</p>
           </div>
         </div>
       )}
@@ -150,11 +150,11 @@ function ChatEntryView({ entry }: { entry: ChatEntry }): React.JSX.Element {
       <div className="flex justify-center">
         <p
           className={cn(
-            'max-w-xl text-center text-[11px]',
+            'max-w-xl text-center text-11',
             entry.level === 'error'
-              ? 'text-red-600 dark:text-red-400'
+              ? 'text-danger'
               : entry.level === 'warning'
-                ? 'text-amber-600 dark:text-amber-400'
+                ? 'text-warning'
                 : 'text-muted-foreground'
           )}
         >
@@ -177,7 +177,7 @@ function MessageEntry({ entry }: { entry: ChatMessageEntry }): React.JSX.Element
   if (entry.role === 'user') {
     return (
       <div className="flex justify-end">
-        <div className="max-w-[85%] rounded-[14px] bg-accent px-3.5 py-2 text-[14px] leading-6 text-foreground">
+        <div className="max-w-[85%] rounded-message bg-accent px-3.5 py-2 text-14 leading-6 text-foreground">
           <p className="whitespace-pre-wrap break-words">{entry.text}</p>
         </div>
       </div>
@@ -188,20 +188,20 @@ function MessageEntry({ entry }: { entry: ChatMessageEntry }): React.JSX.Element
     <div className="min-w-0">
       {entry.reasoning && (
         <details className="group">
-          <summary className="flex cursor-pointer list-none items-center gap-1 py-0.5 text-[12px] text-muted-foreground transition-colors hover:text-foreground">
+          <summary className="flex cursor-pointer list-none items-center gap-1 py-0.5 text-12 text-muted-foreground transition-colors hover:text-foreground">
             <ChevronRight
               className="size-3.5 shrink-0 transition-transform group-open:rotate-90"
               strokeWidth={1.75}
             />
             <span>{t('chat.reasoningProcess')}</span>
           </summary>
-          <p className="mb-2 ml-4 mt-1 whitespace-pre-wrap break-words text-[12px] leading-6 text-muted-foreground">
+          <p className="mb-2 ml-4 mt-1 whitespace-pre-wrap break-words text-12 leading-6 text-muted-foreground">
             {entry.reasoning}
           </p>
         </details>
       )}
 
-      <div className="whitespace-pre-wrap break-words text-[14px] leading-[1.8] text-foreground">
+      <div className="whitespace-pre-wrap break-words text-14 leading-reading text-foreground">
         {entry.text}
         {entry.streaming && (
           <span className="ml-0.5 inline-block h-4 w-1.5 animate-pulse rounded-sm bg-foreground/60 align-middle" />
@@ -217,7 +217,7 @@ function ToolEntry({ entry }: { entry: ChatToolEntry }): React.JSX.Element {
 
   return (
     <details className="group -mx-2">
-      <summary className="flex cursor-pointer list-none items-center gap-1 rounded-md px-2 py-1 text-[12px] text-muted-foreground transition-colors hover:bg-accent/40 hover:text-foreground">
+      <summary className="flex cursor-pointer list-none items-center gap-1 rounded-md px-2 py-1 text-12 text-muted-foreground transition-colors hover:bg-accent/40 hover:text-foreground">
         <ChevronRight
           className="size-3.5 shrink-0 transition-transform group-open:rotate-90"
           strokeWidth={1.75}
@@ -225,11 +225,11 @@ function ToolEntry({ entry }: { entry: ChatToolEntry }): React.JSX.Element {
         <span className="min-w-0 flex-1 truncate">{entry.name}</span>
         <span
           className={cn(
-            'text-[11px]',
+            'text-11',
             entry.status === 'failed'
-              ? 'text-red-600 dark:text-red-400'
+              ? 'text-danger'
               : entry.status === 'running'
-                ? 'text-amber-600 dark:text-amber-400'
+                ? 'text-warning'
                 : 'text-muted-foreground'
           )}
         >
@@ -241,8 +241,8 @@ function ToolEntry({ entry }: { entry: ChatToolEntry }): React.JSX.Element {
         <div className="ml-4 space-y-2 border-l border-border py-1 pl-3">
           {entry.input !== null && (
             <div>
-              <p className="mb-1 text-[10px] text-muted-foreground">{t('chat.toolInput')}</p>
-              <pre className="max-h-40 overflow-auto whitespace-pre-wrap break-words rounded-md bg-muted/50 p-2 font-mono text-[11px] leading-5 text-muted-foreground">
+              <p className="mb-1 text-10 text-muted-foreground">{t('chat.toolInput')}</p>
+              <pre className="max-h-40 overflow-auto whitespace-pre-wrap break-words rounded-md bg-muted/50 p-2 font-mono text-11 leading-5 text-muted-foreground">
                 {formatValue(entry.input)}
               </pre>
             </div>
@@ -250,8 +250,8 @@ function ToolEntry({ entry }: { entry: ChatToolEntry }): React.JSX.Element {
 
           {entry.output && (
             <div>
-              <p className="mb-1 text-[10px] text-muted-foreground">{t('chat.toolOutput')}</p>
-              <pre className="max-h-52 overflow-auto whitespace-pre-wrap break-words rounded-md bg-muted/50 p-2 font-mono text-[11px] leading-5 text-muted-foreground">
+              <p className="mb-1 text-10 text-muted-foreground">{t('chat.toolOutput')}</p>
+              <pre className="max-h-52 overflow-auto whitespace-pre-wrap break-words rounded-md bg-muted/50 p-2 font-mono text-11 leading-5 text-muted-foreground">
                 {entry.output}
               </pre>
             </div>
