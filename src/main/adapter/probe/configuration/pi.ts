@@ -4,7 +4,8 @@ import type { HarnessModelInfo } from '../../../../shared/harness'
 import { getPiAgentDir } from '../environment'
 import { getNonEmptyString, isRecord, readJsonObject } from '../files'
 
-const PI_THINKING_LEVELS = new Set(['off', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max'])
+const PI_THINKING_LEVELS = ['off', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max'] as const
+const PI_THINKING_LEVEL_SET = new Set<string>(PI_THINKING_LEVELS)
 
 function parseModelReference(reference: string): { provider: string; id: string } | null {
   const separatorIndex = reference.indexOf('/')
@@ -37,16 +38,21 @@ function getPiModels(
   const getReasoningEffort = (reference: string): string | null => {
     const modelThinkingLevel = getNonEmptyString(modelThinkingLevels[reference])
 
-    if (modelThinkingLevel && PI_THINKING_LEVELS.has(modelThinkingLevel)) {
+    if (modelThinkingLevel && PI_THINKING_LEVEL_SET.has(modelThinkingLevel)) {
       return modelThinkingLevel
     }
 
-    return defaultThinkingLevel && PI_THINKING_LEVELS.has(defaultThinkingLevel)
+    return defaultThinkingLevel && PI_THINKING_LEVEL_SET.has(defaultThinkingLevel)
       ? defaultThinkingLevel
       : null
   }
 
-  const addModel = (provider: string, id: string, name: string | null): void => {
+  const addModel = (
+    provider: string,
+    id: string,
+    name: string | null,
+    reasoningLevels: string[] = []
+  ): void => {
     const reference = `${provider}/${id}`
     const existing = models.get(reference)
 
@@ -55,6 +61,8 @@ function getPiModels(
       id,
       name: name ?? existing?.name ?? id,
       reasoningEffort: getReasoningEffort(reference),
+      reasoningLevels:
+        reasoningLevels.length > 0 ? reasoningLevels : (existing?.reasoningLevels ?? []),
       isDefault: reference === defaultReference
     })
   }
@@ -87,7 +95,17 @@ function getPiModels(
         }
 
         const provider = getNonEmptyString(modelConfig.provider) ?? providerId
-        addModel(provider, id, getNonEmptyString(modelConfig.name))
+        const thinkingLevelMap = isRecord(modelConfig.thinkingLevelMap)
+          ? modelConfig.thinkingLevelMap
+          : null
+        const reasoningLevels =
+          modelConfig.reasoning === true
+            ? PI_THINKING_LEVELS.filter(
+                (level) => thinkingLevelMap === null || getNonEmptyString(thinkingLevelMap[level])
+              )
+            : []
+
+        addModel(provider, id, getNonEmptyString(modelConfig.name), [...reasoningLevels])
       }
     }
   }
